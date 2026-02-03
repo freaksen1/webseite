@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Kurze Frage</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #1a1a1a, #000);
+      font-family: system-ui, sans-serif;
+      color: white;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+      padding: 50px 60px;
+      border-radius: 24px;
+      text-align: center;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      position: relative;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 40px;
+      font-weight: 600;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      position: relative;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 14px 36px;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    #yes {
+      background: linear-gradient(135deg, #ff7a7a, #ff4d8d);
+      color: white;
+      z-index: 2;
+    }
+
+    #no {
+      background: rgba(255,255,255,0.18);
+      color: white;
+      position: relative;
+      transition: transform 0.25s ease;
+    }
+
+    #result {
+      margin-top: 40px;
+      font-size: 18px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1>Jelena,<br>Willst du in Gedanken mein Valentin sein?</h1>
+
+  <div class="buttons">
+    <button id="yes">Ja</button>
+    <button id="no">Nein</button>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+<script>
+  const noBtn = document.getElementById("no");
+  const yesBtn = document.getElementById("yes");
+  const result = document.getElementById("result");
+
+  noBtn.addEventListener("mousemove", (e) => {
+    const rect = noBtn.getBoundingClientRect();
+
+    const btnCenterX = rect.left + rect.width / 3;
+    const btnCenterY = rect.top + rect.height / 3;
+
+    const dx = btnCenterX - e.clientX;
+    const dy = btnCenterY - e.clientY;
+
+    const length = Math.sqrt(dx * dx + dy * dy) || 1;
+
+    const moveX = (dx / length) * 120;
+    const moveY = (dy / length) * 60;
+
+    noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+  });
+
+  yesBtn.addEventListener("click", () => {
+    result.textContent = "niceeeee";
+    result.style.opacity = 1;
+  });
+</script>
+
+</body>
+</html>
