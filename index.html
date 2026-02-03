@@ -2,47 +2,54 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kurze Frage</title>
+
   <style>
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       background: radial-gradient(circle at top, #1a1a1a, #000);
       font-family: system-ui, sans-serif;
       color: white;
+      padding: 20px;
     }
 
     .card {
       background: rgba(255,255,255,0.08);
       backdrop-filter: blur(20px);
-      padding: 50px 60px;
+      padding: 40px 24px;
       border-radius: 24px;
       text-align: center;
       box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      width: 100%;
+      max-width: 380px;
       position: relative;
+      overflow: hidden;
     }
 
     h1 {
-      font-size: 26px;
-      margin-bottom: 40px;
+      font-size: 22px;
       font-weight: 600;
+      margin-bottom: 32px;
+      line-height: 1.3;
     }
 
     .buttons {
       display: flex;
-      gap: 24px;
+      gap: 16px;
       justify-content: center;
       position: relative;
     }
 
     button {
-      font-size: 18px;
-      padding: 14px 36px;
+      font-size: 16px;
+      padding: 14px 28px;
       border: none;
       border-radius: 999px;
       cursor: pointer;
@@ -60,11 +67,12 @@
       color: white;
       position: relative;
       transition: transform 0.25s ease;
+      touch-action: none;
     }
 
     #result {
-      margin-top: 40px;
-      font-size: 18px;
+      margin-top: 32px;
+      font-size: 16px;
       opacity: 0;
       transition: opacity 0.4s ease;
     }
@@ -88,25 +96,44 @@
   const yesBtn = document.getElementById("yes");
   const result = document.getElementById("result");
 
-  noBtn.addEventListener("mousemove", (e) => {
+  function moveAway(x, y) {
     const rect = noBtn.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
 
-    const btnCenterX = rect.left + rect.width / 3;
-    const btnCenterY = rect.top + rect.height / 3;
-
-    const dx = btnCenterX - e.clientX;
-    const dy = btnCenterY - e.clientY;
+    const dx = centerX - x;
+    const dy = centerY - y;
 
     const length = Math.sqrt(dx * dx + dy * dy) || 1;
 
-    const moveX = (dx / length) * 120;
+    const moveX = (dx / length) * 100;
     const moveY = (dy / length) * 60;
 
     noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+  }
+
+  // Desktop (Maus)
+  document.addEventListener("mousemove", (e) => {
+    const rect = noBtn.getBoundingClientRect();
+    const distance =
+      Math.hypot(
+        e.clientX - (rect.left + rect.width / 2),
+        e.clientY - (rect.top + rect.height / 2)
+      );
+
+    if (distance < 120) {
+      moveAway(e.clientX, e.clientY);
+    }
   });
 
+  // Mobile (Touch)
+  document.addEventListener("touchmove", (e) => {
+    const touch = e.touches[0];
+    moveAway(touch.clientX, touch.clientY);
+  }, { passive: true });
+
   yesBtn.addEventListener("click", () => {
-    result.textContent = "niceeeee";
+    result.textContent = "niceee";
     result.style.opacity = 1;
   });
 </script>
